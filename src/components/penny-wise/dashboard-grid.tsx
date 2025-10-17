@@ -2,17 +2,18 @@
 
 import { useState } from 'react';
 import { SummaryCard } from './summary-card';
-import { SavingsGoal } from './savings-goal';
+import { SavingsGoalCarousel } from './savings-goal-carousel';
 import { AiInsights } from './ai-insights';
 import { TransactionHistory } from './transaction-history';
-import { summaryData as initialSummaryData, transactions as initialTransactions, savingsGoal as initialSavingsGoal } from '@/lib/data';
+import { summaryData as initialSummaryData, transactions as initialTransactions, savingsGoals as initialSavingsGoals } from '@/lib/data';
 import { PiggyBank, TrendingUp, Coins, Flame } from 'lucide-react';
 import { SendMoney } from './send-money';
 
 export function DashboardGrid() {
   const [summaryData, setSummaryData] = useState(initialSummaryData);
   const [transactions, setTransactions] = useState(initialTransactions);
-  const [savingsGoal, setSavingsGoal] = useState(initialSavingsGoal);
+  const [savingsGoals, setSavingsGoals] = useState(initialSavingsGoals);
+  const [activeGoalId, setActiveGoalId] = useState(initialSavingsGoals[0].id);
 
   const handleSendMoney = (amount: number, smartSaveAmount: number, recipient: string) => {
     const totalDeduction = amount + smartSaveAmount;
@@ -26,10 +27,11 @@ export function DashboardGrid() {
     }));
 
     // Update savings goal
-    setSavingsGoal(prevGoal => ({
-        ...prevGoal,
-        current: prevGoal.current + smartSaveAmount,
-    }));
+    setSavingsGoals(prevGoals => 
+        prevGoals.map(goal => 
+            goal.id === activeGoalId ? { ...goal, current: goal.current + smartSaveAmount } : goal
+        )
+    );
 
     // Create new transaction records
     const now = new Date();
@@ -88,7 +90,10 @@ export function DashboardGrid() {
 
       <div className="lg:col-span-1 flex flex-col gap-6">
         <SendMoney handleSendMoney={handleSendMoney} />
-        <SavingsGoal savingsGoal={savingsGoal} />
+        <SavingsGoalCarousel 
+          savingsGoals={savingsGoals} 
+          onActiveGoalChange={(goalId) => setActiveGoalId(goalId)}
+        />
       </div>
 
       <div className="lg:col-span-3">

@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import {
   Dialog,
@@ -41,25 +40,16 @@ export function SavingsGoal({ savingsGoal }: SavingsGoalProps) {
 
   return (
     <>
-      <Card className="shadow-md transition-shadow hover:shadow-xl">
-        <CardHeader>
-          <CardTitle className="font-headline text-lg">
-            {savingsGoal.name}
-          </CardTitle>
-          <CardDescription>
-            Your progress towards your next big goal.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-2">
+      <div className="px-1">
+        <h3 className="font-semibold text-center mb-2">{savingsGoal.name}</h3>
+        <div className="space-y-2">
             <Progress value={progress} className="h-3" />
             <div className="flex justify-between text-sm font-medium text-muted-foreground">
-              <span>{formatCurrency(savingsGoal.current)}</span>
-              <span className="font-bold text-primary">{formatCurrency(savingsGoal.target)}</span>
+            <span>{formatCurrency(savingsGoal.current)}</span>
+            <span className="font-bold text-primary">{formatCurrency(savingsGoal.target)}</span>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
       <Dialog open={showConfetti} onOpenChange={setShowConfetti}>
         <DialogContent className="sm:max-w-[425px] overflow-hidden">
           <Confetti />

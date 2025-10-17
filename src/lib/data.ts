@@ -13,11 +13,21 @@ export const summaryData = {
   savingsStreak: 42,
 };
 
-export const savingsGoal = {
-  name: 'Dream Vacation to Japan',
-  current: 3800,
-  target: 5000,
-};
+export const savingsGoals = [
+    {
+        id: 1,
+        name: 'Dream Vacation to Japan',
+        current: 3800,
+        target: 5000,
+    },
+    {
+        id: 2,
+        name: 'New Laptop',
+        current: 800,
+        target: 2000,
+    },
+];
+
 
 export const transactions = [
   { id: 1, name: 'Starbucks Coffee', category: 'Food & Drink', amount: -5.75, date: '2024-07-22' },
