@@ -6,13 +6,14 @@ import { SavingsGoalCarousel } from './savings-goal-carousel';
 import { AiInsights } from './ai-insights';
 import { TransactionHistory } from './transaction-history';
 import { summaryData as initialSummaryData, transactions as initialTransactions, savingsGoals as initialSavingsGoals, budgets as initialBudgets, bills as initialBills } from '@/lib/data';
-import { PiggyBank, TrendingUp, History, Sparkles, BrainCircuit, Landmark } from 'lucide-react';
+import { PiggyBank, TrendingUp, History, Sparkles, BrainCircuit, Landmark, HandCoins } from 'lucide-react';
 import { SendMoney } from './send-money';
 import { type SavingsGoalData } from './savings-goal';
 import { Button } from '../ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
 import { ScrollArea } from '../ui/scroll-area';
 import { InvestDialog } from './invest-dialog';
+import { RequestMoneyDialog } from './request-money-dialog';
 
 export function DashboardGrid() {
   const [summaryData, setSummaryData] = useState(initialSummaryData);
@@ -111,6 +112,23 @@ export function DashboardGrid() {
     ])
   };
 
+  const handleRequestMoney = (amount: number) => {
+    setSummaryData(prev => ({
+        ...prev,
+        totalBalance: prev.totalBalance + amount,
+    }));
+    setTransactions(prev => [
+        {
+            id: prev.length + 1,
+            name: 'Funds Added',
+            category: 'Deposit',
+            amount: amount,
+            date: new Date().toISOString().split('T')[0],
+        },
+        ...prev,
+    ]);
+  };
+
 
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -145,6 +163,12 @@ export function DashboardGrid() {
       <div className="lg:col-span-2 space-y-4">
          <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-4">
             <SendMoney handleSendMoney={handleSendMoney} />
+            <RequestMoneyDialog onRequestMoney={handleRequestMoney}>
+                <Button variant="outline" className="w-full">
+                    <HandCoins className="mr-2 h-4 w-4" />
+                    Request Money
+                </Button>
+            </RequestMoneyDialog>
              <Dialog>
                 <DialogTrigger asChild>
                     <Button variant="outline" className="w-full">
