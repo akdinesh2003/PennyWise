@@ -6,7 +6,7 @@ import { SavingsGoal } from './savings-goal';
 import { AiInsights } from './ai-insights';
 import { TransactionHistory } from './transaction-history';
 import { summaryData as initialSummaryData, transactions as initialTransactions, savingsGoal as initialSavingsGoal } from '@/lib/data';
-import { PiggyBank, TrendingUp, Coins, Flame, ArrowDown, ArrowUp } from 'lucide-react';
+import { PiggyBank, TrendingUp, Coins, Flame } from 'lucide-react';
 import { SendMoney } from './send-money';
 
 export function DashboardGrid() {
@@ -45,7 +45,7 @@ export function DashboardGrid() {
         id: transactions.length + 2,
         name: 'SmartSave Transfer',
         category: 'Savings',
-        amount: smartSaveAmount,
+        amount: -smartSaveAmount, // This is a deduction from balance
         date: now.toISOString().split('T')[0],
     }
 
