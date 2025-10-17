@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { PennyWiseLogo } from '@/components/icons';
-import { user } from '@/lib/data';
+import { type user as UserType } from '@/lib/data';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Settings, LogOut, User } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -19,7 +19,12 @@ import { useToast } from '@/hooks/use-toast';
 import { ProfileDialog } from './profile-dialog';
 import { SettingsDialog } from './settings-dialog';
 
-export function Header() {
+interface HeaderProps {
+    user: typeof UserType;
+    onProfileUpdate: (name: string, email: string) => void;
+}
+
+export function Header({ user, onProfileUpdate }: HeaderProps) {
   const { toast } = useToast();
 
   const handleLogout = () => {
@@ -63,7 +68,7 @@ export function Header() {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <ProfileDialog>
+            <ProfileDialog user={user} onSave={onProfileUpdate}>
               <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                 <User />
                 Profile

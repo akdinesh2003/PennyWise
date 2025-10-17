@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -9,24 +10,35 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { user } from '@/lib/data';
+import { type user as UserType } from '@/lib/data';
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { useToast } from '@/hooks/use-toast';
 
-export function ProfileDialog({ children }: { children: React.ReactNode }) {
+interface ProfileDialogProps {
+  children: React.ReactNode;
+  user: typeof UserType;
+  onSave: (name: string, email: string) => void;
+}
+
+export function ProfileDialog({ children, user, onSave }: ProfileDialogProps) {
   const { toast } = useToast();
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState(user.name);
+  const [email, setEmail] = useState('m@example.com');
 
   const handleSave = () => {
+    onSave(name, email);
     toast({
         title: 'Profile Updated',
         description: 'Your changes have been saved successfully.',
     });
+    setOpen(false);
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
@@ -37,16 +49,16 @@ export function ProfileDialog({ children }: { children: React.ReactNode }) {
                 {user.avatar?.imageUrl && (
                     <AvatarImage alt={user.name} src={user.avatar.imageUrl} data-ai-hint={user.avatar.imageHint} />
                 )}
-                <AvatarFallback className="text-3xl">{user.name.charAt(0)}</AvatarFallback>
+                <AvatarFallback className="text-3xl">{name.charAt(0)}</AvatarFallback>
             </Avatar>
             <div className="w-full space-y-4">
                  <div className="grid w-full items-center gap-1.5">
                     <Label htmlFor="name">Name</Label>
-                    <Input type="text" id="name" defaultValue={user.name} />
+                    <Input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} />
                 </div>
                  <div className="grid w-full items-center gap-1.5">
                     <Label htmlFor="email">Email</Label>
-                    <Input type="email" id="email" defaultValue="m@example.com" />
+                    <Input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                 </div>
             </div>
         </div>
