@@ -1,18 +1,8 @@
 "use client";
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowDownLeft, ArrowUpRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ArrowDownLeft, ArrowUpRight } from 'lucide-react';
 import { Separator } from '../ui/separator';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { Button } from '../ui/button';
-import { ScrollArea } from '../ui/scroll-area';
 
 type Transaction = {
   id: number;
@@ -51,51 +41,20 @@ function TransactionItem({ transaction, showSeparator }: { transaction: Transact
           <p className="text-xs font-normal text-muted-foreground">{transaction.date}</p>
         </div>
       </div>
-      {showSeparator && <Separator className="mt-4" />}
+      {showSeparator && <Separator className="my-4" />}
     </>
   );
 }
 
 
 export function TransactionHistory({ transactions }: { transactions: Transaction[] }) {
-  const recentTransactions = transactions.slice(0, 3);
-
   return (
-    <Card className="shadow-md transition-shadow hover:shadow-xl">
-      <CardHeader>
-        <CardTitle className="font-headline text-lg">Recent Transactions</CardTitle>
-        <CardDescription>Your latest financial activities.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <ul className="space-y-4">
-          {recentTransactions.map((t, index) => (
+    <ul className="space-y-4 pr-4">
+        {transactions.map((t, index) => (
             <li key={t.id}>
-              <TransactionItem transaction={t} showSeparator={index < recentTransactions.length - 1} />
+            <TransactionItem transaction={t} showSeparator={index < transactions.length - 1} />
             </li>
-          ))}
-        </ul>
-      </CardContent>
-      <CardFooter className="border-t pt-4">
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="outline" className="w-full">View All</Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-md">
-            <DialogHeader>
-              <DialogTitle>Transaction History</DialogTitle>
-            </DialogHeader>
-            <ScrollArea className="h-96">
-              <ul className="space-y-4 pr-4">
-                {transactions.map((t, index) => (
-                  <li key={t.id}>
-                    <TransactionItem transaction={t} showSeparator={index < transactions.length - 1} />
-                  </li>
-                ))}
-              </ul>
-            </ScrollArea>
-          </DialogContent>
-        </Dialog>
-      </CardFooter>
-    </Card>
+        ))}
+    </ul>
   );
 }

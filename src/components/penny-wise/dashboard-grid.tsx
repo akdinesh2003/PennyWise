@@ -6,9 +6,12 @@ import { SavingsGoalCarousel } from './savings-goal-carousel';
 import { AiInsights } from './ai-insights';
 import { TransactionHistory } from './transaction-history';
 import { summaryData as initialSummaryData, transactions as initialTransactions, savingsGoals as initialSavingsGoals } from '@/lib/data';
-import { PiggyBank, TrendingUp, Coins, Flame } from 'lucide-react';
+import { PiggyBank, TrendingUp, Coins, Flame, History } from 'lucide-react';
 import { SendMoney } from './send-money';
 import { type SavingsGoalData } from './savings-goal';
+import { Button } from '../ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { ScrollArea } from '../ui/scroll-area';
 
 export function DashboardGrid() {
   const [summaryData, setSummaryData] = useState(initialSummaryData);
@@ -109,17 +112,31 @@ export function DashboardGrid() {
       </div>
 
       <div className="lg:col-span-1 flex flex-col gap-6">
-        <SendMoney handleSendMoney={handleSendMoney} />
+        <div className="grid grid-cols-2 gap-4">
+            <SendMoney handleSendMoney={handleSendMoney} />
+             <Dialog>
+                <DialogTrigger asChild>
+                    <Button variant="outline" className="w-full">
+                        <History className="mr-2 h-4 w-4" />
+                        History
+                    </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                    <DialogTitle>Transaction History</DialogTitle>
+                    </DialogHeader>
+                    <ScrollArea className="h-96">
+                        <TransactionHistory transactions={transactions} />
+                    </ScrollArea>
+                </DialogContent>
+            </Dialog>
+        </div>
         <SavingsGoalCarousel 
           savingsGoals={savingsGoals} 
           onActiveGoalChange={(goalId) => setActiveGoalId(goalId)}
           onAddGoal={handleAddGoal}
           onDeleteGoal={handleDeleteGoal}
         />
-      </div>
-
-      <div className="lg:col-span-3">
-        <TransactionHistory transactions={transactions} />
       </div>
     </div>
   );
