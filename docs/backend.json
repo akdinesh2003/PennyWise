@@ -31,12 +31,28 @@
           }
         },
         "notificationPreferences": {
-          "type": "string",
-          "description": "Users' notification preferences."
+          "type": "object",
+          "description": "Users' notification preferences.",
+          "properties": {
+            "emailReminders": {
+              "type": "boolean"
+            },
+            "weeklySummary": {
+              "type": "boolean"
+            }
+          }
         },
         "themePreference": {
           "type": "string",
           "description": "Users' theme preference (e.g., light/dark mode)."
+        },
+        "profileVisibility": {
+          "type": "string",
+          "enum": [
+            "public",
+            "private"
+          ],
+          "description": "User's profile visibility preference."
         }
       },
       "required": [
@@ -303,3 +319,4 @@
     "reasoning": "The Firestore structure is designed to ensure security, scalability, and ease of debugging, following the principles of Authorization Independence, Clarity of Intent, DBAC (Database-Based Access Control), and QAPs (Rules are not Filters).  Authorization Independence is achieved through path-based ownership and avoiding `get()` calls in security rules.  Structural Segregation separates user-specific data. Access Modeling uses path-based ownership for private data, enhancing security and simplifying rules. All collections are designed with homogeneous security requirements.\n\n*   `/users/{userId}/userProfile`: Stores user profile information.  This structure provides straightforward ownership-based security. There is no mixing of data with different security needs in the same collection. Access control is simplified and highly secure due to the direct path-based ownership.  This directly supports QAPs by ensuring list operations are scoped to the authenticated user.\n*   `/users/{userId}/savingsGoals/{savingsGoalId}`: Stores the savings goals for each user. This structure allows for easy querying of a specific user's savings goals, as well as securing access to only the data of an authenticated user.\n*   `/users/{userId}/transactions/{transactionId}`: Stores transaction data, facilitating easy tracking and analysis of a user's financial transactions. The path-based approach ensures that only the authenticated user can access their own transaction data.\n*   `/users/{userId}/pennyPoints/{pennyPointId}`: Stores penny point records for gamified savings experiences. Access is restricted to the authenticated user. The path-based structure ensures efficient and secure retrieval of a user's point history.\n*   `/users/{userId}/investments/{investmentId}`: Stores user investment records. Access is restricted to the authenticated user, ensuring data privacy and security."
   }
 }
+    
