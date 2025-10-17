@@ -28,12 +28,15 @@ export function ProfileDialog({ children, onSave }: ProfileDialogProps) {
   const { user } = useUser();
 
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState(user?.displayName || '');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState(user?.email || '');
 
   useEffect(() => {
     if (user) {
-        setName(user.displayName || '');
+        const nameParts = user.displayName?.split(' ') || [];
+        setFirstName(nameParts[0] || '');
+        setLastName(nameParts.slice(1).join(' ') || '');
         setEmail(user.email || '');
     }
   }, [user]);
@@ -41,8 +44,9 @@ export function ProfileDialog({ children, onSave }: ProfileDialogProps) {
   const handleSave = async () => {
     if (auth.currentUser) {
         try {
-            await updateProfile(auth.currentUser, { displayName: name });
-            onSave(name, email);
+            const newName = `${firstName} ${lastName}`.trim();
+            await updateProfile(auth.currentUser, { displayName: newName });
+            onSave(newName, email);
             toast({
                 title: 'Profile Updated',
                 description: 'Your changes have been saved successfully.',
@@ -58,7 +62,7 @@ export function ProfileDialog({ children, onSave }: ProfileDialogProps) {
     }
   }
   
-  const userInitial = name.charAt(0) || user?.email?.charAt(0) || 'U';
+  const userInitial = firstName.charAt(0) || user?.email?.charAt(0) || 'U';
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -70,15 +74,21 @@ export function ProfileDialog({ children, onSave }: ProfileDialogProps) {
         <div className="flex flex-col items-center space-y-4 pt-4">
             <Avatar className="h-24 w-24">
                 {user?.photoURL && (
-                    <AvatarImage alt={name} src={user.photoURL} />
+                    <AvatarImage alt={user.displayName || ''} src={user.photoURL} />
                 )}
                 <AvatarFallback className="text-3xl">{userInitial}</AvatarFallback>
             </Avatar>
             <div className="w-full space-y-4">
-                 <div className="grid w-full items-center gap-1.5">
-                    <Label htmlFor="name">Name</Label>
-                    <Input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} />
-                </div>
+                 <div className="grid grid-cols-2 gap-4">
+                    <div className="grid w-full items-center gap-1.5">
+                        <Label htmlFor="first-name">First Name</Label>
+                        <Input type="text" id="first-name" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+                    </div>
+                    <div className="grid w-full items-center gap-1.5">
+                        <Label htmlFor="last-name">Last Name</Label>
+                        <Input type="text" id="last-name" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                    </div>
+                 </div>
                  <div className="grid w-full items-center gap-1.5">
                     <Label htmlFor="email">Email</Label>
                     <Input type="email" id="email" value={email} disabled />
