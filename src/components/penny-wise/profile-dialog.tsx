@@ -3,6 +3,7 @@
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -11,8 +12,19 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { user } from '@/lib/data';
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
+import { Button } from '../ui/button';
+import { useToast } from '@/hooks/use-toast';
 
 export function ProfileDialog({ children }: { children: React.ReactNode }) {
+  const { toast } = useToast();
+
+  const handleSave = () => {
+    toast({
+        title: 'Profile Updated',
+        description: 'Your changes have been saved successfully.',
+    });
+  }
+
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -38,6 +50,9 @@ export function ProfileDialog({ children }: { children: React.ReactNode }) {
                 </div>
             </div>
         </div>
+        <DialogFooter>
+            <Button onClick={handleSave}>Save changes</Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
