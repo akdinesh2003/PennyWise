@@ -158,6 +158,41 @@
         "dateEarned",
         "description"
       ]
+    },
+    "Investment": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Investment",
+      "type": "object",
+      "description": "Represents a user's investment in the PennyWise application.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the investment."
+        },
+        "userProfileId": {
+          "type": "string",
+          "description": "Reference to UserProfile."
+        },
+        "amount": {
+          "type": "number",
+          "description": "The amount invested."
+        },
+        "date": {
+          "type": "string",
+          "description": "The date of the investment.",
+          "format": "date-time"
+        },
+        "returns": {
+          "type": "number",
+          "description": "The returns generated from the investment."
+        }
+      },
+      "required": [
+        "id",
+        "userProfileId",
+        "amount",
+        "date"
+      ]
     }
   },
   "auth": {
@@ -243,8 +278,28 @@
             }
           ]
         }
+      },
+       {
+        "path": "/users/{userId}/investments/{investmentId}",
+        "definition": {
+          "entityName": "Investment",
+          "schema": {
+            "$ref": "#/backend/entities/Investment"
+          },
+          "description": "Stores user investment data. Uses path-based ownership for security.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier of the user."
+            },
+            {
+              "name": "investmentId",
+              "description": "The unique identifier for the investment record."
+            }
+          ]
+        }
       }
     ],
-    "reasoning": "The Firestore structure is designed to ensure security, scalability, and ease of debugging, following the principles of Authorization Independence, Clarity of Intent, DBAC (Database-Based Access Control), and QAPs (Rules are not Filters).  Authorization Independence is achieved through path-based ownership and avoiding `get()` calls in security rules.  Structural Segregation separates user-specific data. Access Modeling uses path-based ownership for private data, enhancing security and simplifying rules. All collections are designed with homogeneous security requirements.\n\n*   `/users/{userId}/userProfile`: Stores user profile information.  This structure provides straightforward ownership-based security. There is no mixing of data with different security needs in the same collection. Access control is simplified and highly secure due to the direct path-based ownership.  This directly supports QAPs by ensuring list operations are scoped to the authenticated user.\n*   `/users/{userId}/savingsGoals/{savingsGoalId}`: Stores the savings goals for each user. This structure allows for easy querying of a specific user's savings goals, as well as securing access to only the data of an authenticated user.\n*   `/users/{userId}/transactions/{transactionId}`: Stores transaction data, facilitating easy tracking and analysis of a user's financial transactions. The path-based approach ensures that only the authenticated user can access their own transaction data.\n*   `/users/{userId}/pennyPoints/{pennyPointId}`: Stores penny point records for gamified savings experiences. Access is restricted to the authenticated user. The path-based structure ensures efficient and secure retrieval of a user's point history."
+    "reasoning": "The Firestore structure is designed to ensure security, scalability, and ease of debugging, following the principles of Authorization Independence, Clarity of Intent, DBAC (Database-Based Access Control), and QAPs (Rules are not Filters).  Authorization Independence is achieved through path-based ownership and avoiding `get()` calls in security rules.  Structural Segregation separates user-specific data. Access Modeling uses path-based ownership for private data, enhancing security and simplifying rules. All collections are designed with homogeneous security requirements.\n\n*   `/users/{userId}/userProfile`: Stores user profile information.  This structure provides straightforward ownership-based security. There is no mixing of data with different security needs in the same collection. Access control is simplified and highly secure due to the direct path-based ownership.  This directly supports QAPs by ensuring list operations are scoped to the authenticated user.\n*   `/users/{userId}/savingsGoals/{savingsGoalId}`: Stores the savings goals for each user. This structure allows for easy querying of a specific user's savings goals, as well as securing access to only the data of an authenticated user.\n*   `/users/{userId}/transactions/{transactionId}`: Stores transaction data, facilitating easy tracking and analysis of a user's financial transactions. The path-based approach ensures that only the authenticated user can access their own transaction data.\n*   `/users/{userId}/pennyPoints/{pennyPointId}`: Stores penny point records for gamified savings experiences. Access is restricted to the authenticated user. The path-based structure ensures efficient and secure retrieval of a user's point history.\n*   `/users/{userId}/investments/{investmentId}`: Stores user investment records. Access is restricted to the authenticated user, ensuring data privacy and security."
   }
 }

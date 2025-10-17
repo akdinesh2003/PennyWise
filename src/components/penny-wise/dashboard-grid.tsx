@@ -6,7 +6,7 @@ import { SavingsGoalCarousel } from './savings-goal-carousel';
 import { AiInsights } from './ai-insights';
 import { TransactionHistory } from './transaction-history';
 import { summaryData as initialSummaryData, transactions as initialTransactions, savingsGoals as initialSavingsGoals, budgets as initialBudgets, bills as initialBills } from '@/lib/data';
-import { PiggyBank, TrendingUp, History, Sparkles, PieChart, Target, Calendar, HeartPulse } from 'lucide-react';
+import { PiggyBank, TrendingUp, History, Sparkles, PieChart, Target, Calendar, HeartPulse, BrainCircuit } from 'lucide-react';
 import { SendMoney } from './send-money';
 import { type SavingsGoalData } from './savings-goal';
 import { Button } from '../ui/button';
@@ -16,7 +16,7 @@ import { SpendingBreakdown } from './spending-breakdown';
 import { MonthlyBudgeting } from './monthly-budgeting';
 import { UpcomingBills } from './upcoming-bills';
 import { FinancialHealthScore } from './financial-health-score';
-
+import { InvestDialog } from './invest-dialog';
 
 export function DashboardGrid() {
   const [summaryData, setSummaryData] = useState(initialSummaryData);
@@ -25,6 +25,7 @@ export function DashboardGrid() {
   const [activeGoalId, setActiveGoalId] = useState(initialSavingsGoals[0]?.id);
   const [budgets, setBudgets] = useState(initialBudgets);
   const [bills, setBills] = useState(initialBills);
+  const [investments, setInvestments] = useState({ totalInvested: 0, returns: 0 });
 
   const handleSendMoney = (amount: number, smartSaveAmount: number, recipient: string) => {
     const totalDeduction = amount + smartSaveAmount;
@@ -33,8 +34,6 @@ export function DashboardGrid() {
     setSummaryData(prevData => ({
       ...prevData,
       totalBalance: prevData.totalBalance - totalDeduction,
-      dailySavings: prevData.dailySavings + smartSaveAmount,
-      pennyPoints: prevData.pennyPoints + Math.floor(amount / 10), // Example: 1 point per $10
     }));
 
     // Update savings goal
@@ -84,10 +83,33 @@ export function DashboardGrid() {
     }
   };
 
+  const handleInvestment = (amount: number) => {
+    setSummaryData(prev => ({
+        ...prev,
+        totalBalance: prev.totalBalance - amount
+    }));
+    setInvestments(prev => ({
+        ...prev,
+        totalInvested: prev.totalInvested + amount,
+        // Simulate some returns for now
+        returns: prev.returns + amount * 0.05 
+    }));
+    setTransactions(prev => [
+        {
+            id: prev.length + 1,
+            name: 'Investment',
+            category: 'Investment',
+            amount: -amount,
+            date: new Date().toISOString().split('T')[0],
+        },
+        ...prev,
+    ])
+  };
+
 
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-      <div className="lg:col-span-3 grid grid-cols-1 gap-6 sm:grid-cols-2">
+      <div className="lg:col-span-3 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         <SummaryCard
           title="Total Balance"
           value={summaryData.totalBalance}
@@ -95,16 +117,22 @@ export function DashboardGrid() {
           isCurrency
         />
         <SummaryCard
-          title="Daily Savings"
-          value={summaryData.dailySavings}
+          title="Total Invested"
+          value={investments.totalInvested}
+          icon={BrainCircuit}
+          isCurrency
+        />
+         <SummaryCard
+          title="Total Returns"
+          value={investments.returns}
           icon={TrendingUp}
           isCurrency
-          change="+5.2%"
+          change="+1.2%"
         />
       </div>
 
       <div className="lg:col-span-2 space-y-4">
-         <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4">
+         <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-4">
             <SendMoney handleSendMoney={handleSendMoney} />
              <Dialog>
                 <DialogTrigger asChild>
@@ -136,6 +164,12 @@ export function DashboardGrid() {
                   <AiInsights />
               </DialogContent>
             </Dialog>
+            <InvestDialog onInvest={handleInvestment}>
+                 <Button variant="outline" className="w-full">
+                    <BrainCircuit className="mr-2 h-4 w-4" />
+                    Invest
+                </Button>
+            </InvestDialog>
              <Dialog>
                 <DialogTrigger asChild>
                     <Button variant="outline" className="w-full">

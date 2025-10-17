@@ -10,9 +10,6 @@ export const user = {
 
 export const summaryData = {
   totalBalance: 12450.78,
-  dailySavings: 15.50,
-  pennyPoints: 2300,
-  savingsStreak: 42,
 };
 
 export const savingsGoals = [
