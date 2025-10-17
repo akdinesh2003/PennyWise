@@ -16,6 +16,7 @@ import { InvestDialog } from './invest-dialog';
 import { RequestMoneyDialog } from './request-money-dialog';
 import { ReceiveMoneyDialog } from './receive-money-dialog';
 import { WithdrawSavingsDialog } from './withdraw-savings-dialog';
+import { WithdrawReturnsDialog } from './withdraw-returns-dialog';
 
 export function DashboardGrid() {
   const [summaryData, setSummaryData] = useState(initialSummaryData);
@@ -170,6 +171,32 @@ export function DashboardGrid() {
     ]);
   };
 
+  const handleWithdrawReturns = (amount: number) => {
+    // Add to total balance
+    setSummaryData(prev => ({
+      ...prev,
+      totalBalance: prev.totalBalance + amount,
+    }));
+
+    // Deduct from investment returns
+    setInvestments(prev => ({
+        ...prev,
+        returns: prev.returns - amount
+    }));
+
+    // Add transaction
+    setTransactions(prev => [
+      {
+        id: prev.length + 1,
+        name: 'Withdrawal from Returns',
+        category: 'Transfers',
+        amount: amount,
+        date: new Date().toISOString().split('T')[0],
+      },
+      ...prev,
+    ]);
+  };
+
 
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -200,13 +227,20 @@ export function DashboardGrid() {
           icon={BrainCircuit}
           isCurrency
         />
-         <SummaryCard
-          title="Total Returns"
-          value={investments.returns}
-          icon={TrendingUp}
-          isCurrency
-          change="+1.2%"
-        />
+         <WithdrawReturnsDialog
+          totalReturns={investments.returns}
+          onWithdraw={handleWithdrawReturns}
+        >
+          <div>
+            <SummaryCard
+              title="Total Returns"
+              value={investments.returns}
+              icon={TrendingUp}
+              isCurrency
+              change="+1.2%"
+            />
+          </div>
+        </WithdrawReturnsDialog>
       </div>
 
       <div className="lg:col-span-2 space-y-4">
