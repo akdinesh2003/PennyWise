@@ -13,9 +13,9 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Send } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
 
 const smartSavePercentages = [0, 2, 3, 5, 7, 10];
 
@@ -38,7 +38,7 @@ export function SendMoney({ handleSendMoney }: SendMoneyProps) {
     handleSendMoney(amountNumber, smartSaveAmount, recipient);
     toast({
         title: 'Transaction Successful',
-        description: `$${amountNumber.toFixed(2)} sent to ${recipient}.$${smartSaveAmount.toFixed(2)} moved to savings.`,
+        description: `$${amountNumber.toFixed(2)} sent to ${recipient}. $${smartSaveAmount.toFixed(2)} moved to savings.`,
     });
     setOpen(false);
     setAmount('');
@@ -85,20 +85,17 @@ export function SendMoney({ handleSendMoney }: SendMoneyProps) {
             <p className="text-sm text-muted-foreground mb-2">
               Save a small percentage with this transaction.
             </p>
-            <RadioGroup
-              value={String(smartSave)}
-              onValueChange={(value) => setSmartSave(Number(value))}
-              className="flex flex-wrap gap-2"
-            >
+            <div className="flex flex-wrap gap-2">
               {smartSavePercentages.map((p) => (
-                <div key={p} className="flex items-center space-x-2">
-                   <RadioGroupItem value={String(p)} id={`r${p}`} />
-                  <Label htmlFor={`r${p}`} className="cursor-pointer">
-                    {p > 0 ? `${p}%` : 'None'}
-                  </Label>
-                </div>
+                <Button
+                  key={p}
+                  variant={smartSave === p ? 'default' : 'outline'}
+                  onClick={() => setSmartSave(p)}
+                >
+                  {p > 0 ? `${p}%` : 'None'}
+                </Button>
               ))}
-            </RadioGroup>
+            </div>
           </div>
           <div className="mt-4 p-4 bg-secondary rounded-lg">
              <div className="flex justify-between text-sm">
