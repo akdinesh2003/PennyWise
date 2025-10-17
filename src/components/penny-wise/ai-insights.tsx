@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect } from 'react';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useEffect, useActionState } from 'react';
+import { useFormStatus } from 'react-dom';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -38,7 +38,7 @@ function SubmitButton() {
 }
 
 export function AiInsights() {
-  const [state, formAction] = useFormState(getSavingsSuggestions, initialState);
+  const [state, formAction] = useActionState(getSavingsSuggestions, initialState);
   const { toast } = useToast();
 
   useEffect(() => {
