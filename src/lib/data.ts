@@ -16,13 +16,13 @@ export const savingsGoals = [
     {
         id: 1,
         name: 'Dream Vacation to Japan',
-        current: 3800,
+        current: 0,
         target: 5000,
     },
     {
         id: 2,
         name: 'New Laptop',
-        current: 800,
+        current: 0,
         target: 2000,
     },
 ];
