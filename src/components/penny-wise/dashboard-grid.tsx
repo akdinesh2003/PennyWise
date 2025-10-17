@@ -5,19 +5,26 @@ import { SummaryCard } from './summary-card';
 import { SavingsGoalCarousel } from './savings-goal-carousel';
 import { AiInsights } from './ai-insights';
 import { TransactionHistory } from './transaction-history';
-import { summaryData as initialSummaryData, transactions as initialTransactions, savingsGoals as initialSavingsGoals } from '@/lib/data';
-import { PiggyBank, TrendingUp, Coins, Flame, History, Sparkles } from 'lucide-react';
+import { summaryData as initialSummaryData, transactions as initialTransactions, savingsGoals as initialSavingsGoals, budgets as initialBudgets, bills as initialBills } from '@/lib/data';
+import { PiggyBank, TrendingUp, Coins, Flame, History, Sparkles, PieChart, Target, Calendar, HeartPulse } from 'lucide-react';
 import { SendMoney } from './send-money';
 import { type SavingsGoalData } from './savings-goal';
 import { Button } from '../ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
 import { ScrollArea } from '../ui/scroll-area';
+import { SpendingBreakdown } from './spending-breakdown';
+import { MonthlyBudgeting } from './monthly-budgeting';
+import { UpcomingBills } from './upcoming-bills';
+import { FinancialHealthScore } from './financial-health-score';
+
 
 export function DashboardGrid() {
   const [summaryData, setSummaryData] = useState(initialSummaryData);
   const [transactions, setTransactions] = useState(initialTransactions);
   const [savingsGoals, setSavingsGoals] = useState(initialSavingsGoals);
   const [activeGoalId, setActiveGoalId] = useState(initialSavingsGoals[0]?.id);
+  const [budgets, setBudgets] = useState(initialBudgets);
+  const [bills, setBills] = useState(initialBills);
 
   const handleSendMoney = (amount: number, smartSaveAmount: number, recipient: string) => {
     const totalDeduction = amount + smartSaveAmount;
@@ -108,7 +115,7 @@ export function DashboardGrid() {
       </div>
 
       <div className="lg:col-span-2 space-y-4">
-         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+         <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4">
             <SendMoney handleSendMoney={handleSendMoney} />
              <Dialog>
                 <DialogTrigger asChild>
@@ -136,6 +143,50 @@ export function DashboardGrid() {
               <DialogContent className="sm:max-w-3xl">
                 <AiInsights />
               </DialogContent>
+            </Dialog>
+             <Dialog>
+                <DialogTrigger asChild>
+                    <Button variant="outline" className="w-full">
+                        <PieChart className="mr-2 h-4 w-4" />
+                        Breakdown
+                    </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-lg">
+                    <SpendingBreakdown transactions={transactions} />
+                </DialogContent>
+            </Dialog>
+             <Dialog>
+                <DialogTrigger asChild>
+                    <Button variant="outline" className="w-full">
+                        <Target className="mr-2 h-4 w-4" />
+                        Budgets
+                    </Button>
+                </DialogTrigger>
+                <DialogContent>
+                    <MonthlyBudgeting budgets={budgets} />
+                </DialogContent>
+            </Dialog>
+             <Dialog>
+                <DialogTrigger asChild>
+                    <Button variant="outline" className="w-full">
+                        <Calendar className="mr-2 h-4 w-4" />
+                        Bills
+                    </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-md">
+                    <UpcomingBills bills={bills} />
+                </DialogContent>
+            </Dialog>
+             <Dialog>
+                <DialogTrigger asChild>
+                    <Button variant="outline" className="w-full">
+                        <HeartPulse className="mr-2 h-4 w-4" />
+                        Health
+                    </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-sm">
+                    <FinancialHealthScore />
+                </DialogContent>
             </Dialog>
         </div>
       </div>
