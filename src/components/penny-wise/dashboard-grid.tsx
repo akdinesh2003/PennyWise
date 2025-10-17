@@ -2,7 +2,6 @@ import { SummaryCard } from './summary-card';
 import { SavingsGoal } from './savings-goal';
 import { AiInsights } from './ai-insights';
 import { TransactionHistory } from './transaction-history';
-import { Rewards } from './rewards';
 import { summaryData } from '@/lib/data';
 import { PiggyBank, TrendingUp, Coins, Flame } from 'lucide-react';
 import { SendMoney } from './send-money';
@@ -46,12 +45,8 @@ export function DashboardGrid() {
         <SavingsGoal />
       </div>
 
-      <div className="lg:col-span-2">
+      <div className="lg:col-span-3">
         <TransactionHistory />
-      </div>
-
-      <div className="lg:col-span-1">
-        <Rewards />
       </div>
     </div>
   );
