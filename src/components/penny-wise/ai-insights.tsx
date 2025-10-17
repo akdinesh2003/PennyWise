@@ -7,10 +7,9 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { getSavingsSuggestions } from '@/app/actions';
-import { Lightbulb, Loader2, AlertTriangle, Sparkles } from 'lucide-react';
+import { Lightbulb, Loader2, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Skeleton } from '@/components/ui/skeleton';
 
 const initialState = {
   suggestions: [],
@@ -52,7 +51,7 @@ export function AiInsights() {
   }, [state, toast]);
 
   return (
-    <Card className="shadow-md transition-shadow hover:shadow-xl w-full">
+    <Card className="shadow-none border-none">
       <form action={formAction}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2 font-headline text-lg">

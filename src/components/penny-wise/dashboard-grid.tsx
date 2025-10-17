@@ -6,7 +6,7 @@ import { SavingsGoalCarousel } from './savings-goal-carousel';
 import { AiInsights } from './ai-insights';
 import { TransactionHistory } from './transaction-history';
 import { summaryData as initialSummaryData, transactions as initialTransactions, savingsGoals as initialSavingsGoals } from '@/lib/data';
-import { PiggyBank, TrendingUp, Coins, Flame, History } from 'lucide-react';
+import { PiggyBank, TrendingUp, Coins, Flame, History, Sparkles } from 'lucide-react';
 import { SendMoney } from './send-money';
 import { type SavingsGoalData } from './savings-goal';
 import { Button } from '../ui/button';
@@ -107,12 +107,8 @@ export function DashboardGrid() {
         />
       </div>
 
-      <div className="lg:col-span-2">
-        <AiInsights />
-      </div>
-
-      <div className="lg:col-span-1 flex flex-col gap-6">
-        <div className="grid grid-cols-2 gap-4">
+      <div className="lg:col-span-2 space-y-4">
+         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <SendMoney handleSendMoney={handleSendMoney} />
              <Dialog>
                 <DialogTrigger asChild>
@@ -130,7 +126,22 @@ export function DashboardGrid() {
                     </ScrollArea>
                 </DialogContent>
             </Dialog>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="outline" className="w-full">
+                  <Sparkles className="mr-2 h-4 w-4" />
+                  AI Insights
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-3xl">
+                <AiInsights />
+              </DialogContent>
+            </Dialog>
         </div>
+      </div>
+
+
+      <div className="lg:col-span-1 flex flex-col gap-6">
         <SavingsGoalCarousel 
           savingsGoals={savingsGoals} 
           onActiveGoalChange={(goalId) => setActiveGoalId(goalId)}
