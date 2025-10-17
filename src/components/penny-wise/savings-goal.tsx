@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { savingsGoal } from '@/lib/data';
 import {
   Dialog,
   DialogContent,
@@ -13,7 +12,17 @@ import {
 import { Confetti } from './confetti';
 import { PartyPopper } from 'lucide-react';
 
-export function SavingsGoal() {
+type SavingsGoalData = {
+    name: string;
+    current: number;
+    target: number;
+}
+
+type SavingsGoalProps = {
+    savingsGoal: SavingsGoalData;
+}
+
+export function SavingsGoal({ savingsGoal }: SavingsGoalProps) {
   const [progress, setProgress] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
 
@@ -21,11 +30,11 @@ export function SavingsGoal() {
     const calculatedProgress = (savingsGoal.current / savingsGoal.target) * 100;
     setProgress(calculatedProgress);
 
-    if (calculatedProgress >= 100) {
+    if (calculatedProgress >= 100 && !showConfetti) {
       const timer = setTimeout(() => setShowConfetti(true), 500);
       return () => clearTimeout(timer);
     }
-  }, []);
+  }, [savingsGoal, showConfetti]);
 
   const formatCurrency = (amount: number) =>
     new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);

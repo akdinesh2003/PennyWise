@@ -1,7 +1,6 @@
 "use client";
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { transactions } from '@/lib/data';
 import { ArrowDownLeft, ArrowUpRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Separator } from '../ui/separator';
@@ -15,7 +14,15 @@ import {
 import { Button } from '../ui/button';
 import { ScrollArea } from '../ui/scroll-area';
 
-function TransactionItem({ transaction, showSeparator }: { transaction: typeof transactions[0], showSeparator: boolean }) {
+type Transaction = {
+  id: number;
+  name: string;
+  category: string;
+  amount: number;
+  date: string;
+};
+
+function TransactionItem({ transaction, showSeparator }: { transaction: Transaction, showSeparator: boolean }) {
   const formatCurrency = (amount: number) =>
     new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
 
@@ -50,7 +57,7 @@ function TransactionItem({ transaction, showSeparator }: { transaction: typeof t
 }
 
 
-export function TransactionHistory() {
+export function TransactionHistory({ transactions }: { transactions: Transaction[] }) {
   const recentTransactions = transactions.slice(0, 3);
 
   return (
