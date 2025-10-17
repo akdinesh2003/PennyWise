@@ -6,16 +6,12 @@ import { SavingsGoalCarousel } from './savings-goal-carousel';
 import { AiInsights } from './ai-insights';
 import { TransactionHistory } from './transaction-history';
 import { summaryData as initialSummaryData, transactions as initialTransactions, savingsGoals as initialSavingsGoals, budgets as initialBudgets, bills as initialBills } from '@/lib/data';
-import { PiggyBank, TrendingUp, History, Sparkles, PieChart, Target, Calendar, HeartPulse, BrainCircuit } from 'lucide-react';
+import { PiggyBank, TrendingUp, History, Sparkles, BrainCircuit, Landmark } from 'lucide-react';
 import { SendMoney } from './send-money';
 import { type SavingsGoalData } from './savings-goal';
 import { Button } from '../ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
 import { ScrollArea } from '../ui/scroll-area';
-import { SpendingBreakdown } from './spending-breakdown';
-import { MonthlyBudgeting } from './monthly-budgeting';
-import { UpcomingBills } from './upcoming-bills';
-import { FinancialHealthScore } from './financial-health-score';
 import { InvestDialog } from './invest-dialog';
 
 export function DashboardGrid() {
@@ -23,9 +19,9 @@ export function DashboardGrid() {
   const [transactions, setTransactions] = useState(initialTransactions);
   const [savingsGoals, setSavingsGoals] = useState(initialSavingsGoals);
   const [activeGoalId, setActiveGoalId] = useState(initialSavingsGoals[0]?.id);
-  const [budgets, setBudgets] = useState(initialBudgets);
-  const [bills, setBills] = useState(initialBills);
   const [investments, setInvestments] = useState({ totalInvested: 0, returns: 0 });
+  
+  const totalSavings = savingsGoals.reduce((sum, goal) => sum + goal.current, 0);
 
   const handleSendMoney = (amount: number, smartSaveAmount: number, recipient: string) => {
     const totalDeduction = amount + smartSaveAmount;
@@ -57,11 +53,20 @@ export function DashboardGrid() {
         id: transactions.length + 2,
         name: 'SmartSave Transfer',
         category: 'Savings',
-        amount: -smartSaveAmount, // This is a deduction from balance
+        amount: smartSaveAmount, // This is a positive contribution to savings
         date: now.toISOString().split('T')[0],
     }
 
-    setTransactions(prevTransactions => [newTransaction, newSavingsTransaction, ...prevTransactions]);
+    // A bit of a simplification: we're creating a "negative" transaction for the main balance.
+    const newSavingsTransactionDeduction = {
+        id: transactions.length + 3,
+        name: 'SmartSave Transfer',
+        category: 'Savings',
+        amount: -smartSaveAmount,
+        date: now.toISOString().split('T')[0],
+    }
+
+    setTransactions(prevTransactions => [newTransaction, newSavingsTransactionDeduction, ...prevTransactions]);
   };
   
   const handleAddGoal = (name: string, target: number) => {
@@ -114,6 +119,12 @@ export function DashboardGrid() {
           title="Total Balance"
           value={summaryData.totalBalance}
           icon={PiggyBank}
+          isCurrency
+        />
+        <SummaryCard
+          title="Total Savings"
+          value={totalSavings}
+          icon={Landmark}
           isCurrency
         />
         <SummaryCard
