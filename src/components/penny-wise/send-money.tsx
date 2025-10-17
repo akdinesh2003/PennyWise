@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Send } from 'lucide-react';
+import { Send, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 
@@ -28,18 +28,24 @@ export function SendMoney({ handleSendMoney }: SendMoneyProps) {
   const [recipient, setRecipient] = useState('Alex Doe');
   const [amount, setAmount] = useState('');
   const [smartSave, setSmartSave] = useState(0);
+  const [isSending, setIsSending] = useState(false);
   const { toast } = useToast();
 
   const amountNumber = Number(amount) || 0;
   const smartSaveAmount = (amountNumber * smartSave) / 100;
   const totalAmount = amountNumber + smartSaveAmount;
 
-  const onSend = () => {
+  const onSend = async () => {
+    setIsSending(true);
+    await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate 2 second delay
+    
     handleSendMoney(amountNumber, smartSaveAmount, recipient);
     toast({
         title: 'Transaction Successful',
         description: `$${amountNumber.toFixed(2)} sent to ${recipient}. $${smartSaveAmount.toFixed(2)} moved to savings.`,
     });
+
+    setIsSending(false);
     setOpen(false);
     setAmount('');
     setSmartSave(0);
@@ -113,8 +119,15 @@ export function SendMoney({ handleSendMoney }: SendMoneyProps) {
           </div>
         </div>
         <DialogFooter>
-          <Button type="button" onClick={onSend} disabled={amountNumber <= 0}>
-            Send ${totalAmount.toFixed(2)}
+          <Button type="button" onClick={onSend} disabled={amountNumber <= 0 || isSending}>
+            {isSending ? (
+                <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Processing...
+                </>
+            ) : (
+                `Send $${totalAmount.toFixed(2)}`
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>
