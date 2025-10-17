@@ -5,6 +5,7 @@ import { TransactionHistory } from './transaction-history';
 import { Rewards } from './rewards';
 import { summaryData } from '@/lib/data';
 import { PiggyBank, TrendingUp, Coins, Flame } from 'lucide-react';
+import { SendMoney } from './send-money';
 
 export function DashboardGrid() {
   return (
@@ -41,6 +42,7 @@ export function DashboardGrid() {
       </div>
 
       <div className="lg:col-span-1 flex flex-col gap-6">
+        <SendMoney />
         <SavingsGoal />
       </div>
 
