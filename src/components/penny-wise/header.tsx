@@ -15,8 +15,18 @@ import { user } from '@/lib/data';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Settings, LogOut, User } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useToast } from '@/hooks/use-toast';
 
 export function Header() {
+  const { toast } = useToast();
+
+  const handleAction = (action: string) => {
+    toast({
+      title: 'Functionality not implemented',
+      description: `The "${action}" feature is not yet available.`,
+    });
+  };
+
   return (
     <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background/80 px-4 backdrop-blur-sm md:px-6">
       <a href="#" className="flex items-center gap-2">
@@ -51,17 +61,17 @@ export function Header() {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleAction('Profile')}>
               <User />
               Profile
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleAction('Settings')}>
               <Settings />
               Settings
             </DropdownMenuItem>
             <ThemeToggle />
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleAction('Log out')}>
               <LogOut />
               Log out
             </DropdownMenuItem>
