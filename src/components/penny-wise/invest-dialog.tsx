@@ -22,14 +22,29 @@ interface InvestDialogProps {
   onInvest: (amount: number, type: string) => void;
 }
 
+const returnRates: { [key: string]: number } = {
+  stocks: 0.10,
+  crypto: 0.18,
+  'mutual-funds': 0.08,
+};
+
+const formatCurrency = (value: number) =>
+  new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'INR',
+  }).format(value);
+
+
 export function InvestDialog({ children, onInvest }: InvestDialogProps) {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState('');
   const [investmentType, setInvestmentType] = useState('stocks');
 
+  const investmentAmount = parseFloat(amount) || 0;
+  const expectedReturn = investmentAmount * (returnRates[investmentType] || 0);
+
   const handleInvest = () => {
-    const investmentAmount = parseFloat(amount);
     if (!investmentAmount || investmentAmount <= 0) {
         toast({
             variant: "destructive",
@@ -80,6 +95,12 @@ export function InvestDialog({ children, onInvest }: InvestDialogProps) {
                     </SelectContent>
                 </Select>
             </div>
+            {investmentAmount > 0 && (
+                <div className="mt-4 p-4 bg-secondary/50 rounded-lg text-center">
+                    <p className="text-sm text-muted-foreground">Expected Annual Return</p>
+                    <p className="text-2xl font-bold text-green-600 dark:text-green-400">{formatCurrency(expectedReturn)}</p>
+                </div>
+            )}
         </div>
         <DialogFooter>
             <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
