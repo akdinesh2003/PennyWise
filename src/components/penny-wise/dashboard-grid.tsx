@@ -6,7 +6,7 @@ import { SavingsGoalCarousel } from './savings-goal-carousel';
 import { AiInsights } from './ai-insights';
 import { TransactionHistory } from './transaction-history';
 import { summaryData as initialSummaryData, transactions as initialTransactions, savingsGoals as initialSavingsGoals, budgets as initialBudgets, bills as initialBills } from '@/lib/data';
-import { PiggyBank, TrendingUp, History, Sparkles, BrainCircuit, Landmark, HandCoins } from 'lucide-react';
+import { PiggyBank, TrendingUp, History, Sparkles, BrainCircuit, Landmark, HandCoins, QrCode } from 'lucide-react';
 import { SendMoney } from './send-money';
 import { type SavingsGoalData } from './savings-goal';
 import { Button } from '../ui/button';
@@ -14,6 +14,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { ScrollArea } from '../ui/scroll-area';
 import { InvestDialog } from './invest-dialog';
 import { RequestMoneyDialog } from './request-money-dialog';
+import { ReceiveMoneyDialog } from './receive-money-dialog';
 
 export function DashboardGrid() {
   const [summaryData, setSummaryData] = useState(initialSummaryData);
@@ -169,6 +170,12 @@ export function DashboardGrid() {
                     Request Money
                 </Button>
             </RequestMoneyDialog>
+            <ReceiveMoneyDialog>
+                 <Button variant="outline" className="w-full">
+                    <QrCode className="mr-2 h-4 w-4" />
+                    Receive Money
+                </Button>
+            </ReceiveMoneyDialog>
              <Dialog>
                 <DialogTrigger asChild>
                     <Button variant="outline" className="w-full">
