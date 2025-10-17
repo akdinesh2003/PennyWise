@@ -42,7 +42,8 @@ export function InvestDialog({ children, onInvest }: InvestDialogProps) {
   const [investmentType, setInvestmentType] = useState('stocks');
 
   const investmentAmount = parseFloat(amount) || 0;
-  const expectedReturn = investmentAmount * (returnRates[investmentType] || 0);
+  const annualReturn = investmentAmount * (returnRates[investmentType] || 0);
+  const monthlyReturn = annualReturn / 12;
 
   const handleInvest = () => {
     if (!investmentAmount || investmentAmount <= 0) {
@@ -96,9 +97,15 @@ export function InvestDialog({ children, onInvest }: InvestDialogProps) {
                 </Select>
             </div>
             {investmentAmount > 0 && (
-                <div className="mt-4 p-4 bg-secondary/50 rounded-lg text-center">
-                    <p className="text-sm text-muted-foreground">Expected Annual Return</p>
-                    <p className="text-2xl font-bold text-green-600 dark:text-green-400">{formatCurrency(expectedReturn)}</p>
+                <div className="mt-4 grid grid-cols-2 gap-4 p-4 bg-secondary/50 rounded-lg">
+                    <div className="text-center">
+                        <p className="text-sm text-muted-foreground">Expected Monthly Return</p>
+                        <p className="text-xl font-bold text-green-600 dark:text-green-400">{formatCurrency(monthlyReturn)}</p>
+                    </div>
+                     <div className="text-center">
+                        <p className="text-sm text-muted-foreground">Expected Annual Return</p>
+                        <p className="text-xl font-bold text-green-600 dark:text-green-400">{formatCurrency(annualReturn)}</p>
+                    </div>
                 </div>
             )}
         </div>
