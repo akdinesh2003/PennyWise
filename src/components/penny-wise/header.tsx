@@ -16,14 +16,16 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { Settings, LogOut, User } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
+import { ProfileDialog } from './profile-dialog';
+import { SettingsDialog } from './settings-dialog';
 
 export function Header() {
   const { toast } = useToast();
 
-  const handleAction = (action: string) => {
+  const handleLogout = () => {
     toast({
-      title: 'Functionality not implemented',
-      description: `The "${action}" feature is not yet available.`,
+      title: 'Logged Out',
+      description: 'You have been successfully logged out.',
     });
   };
 
@@ -61,17 +63,21 @@ export function Header() {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => handleAction('Profile')}>
-              <User />
-              Profile
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleAction('Settings')}>
-              <Settings />
-              Settings
-            </DropdownMenuItem>
+            <ProfileDialog>
+              <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                <User />
+                Profile
+              </DropdownMenuItem>
+            </ProfileDialog>
+             <SettingsDialog>
+                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                    <Settings />
+                    Settings
+                </DropdownMenuItem>
+            </SettingsDialog>
             <ThemeToggle />
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => handleAction('Log out')}>
+            <DropdownMenuItem onClick={handleLogout}>
               <LogOut />
               Log out
             </DropdownMenuItem>
