@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useRouter } from 'next/navigation';
@@ -52,10 +53,13 @@ export function Header({ onProfileUpdate }: HeaderProps) {
   return (
     <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background/80 px-4 backdrop-blur-sm md:px-6">
       <a href="#" className="flex items-center gap-2">
-        <PennyWiseLogo className="h-6 w-6 text-primary" />
-        <span className="font-headline text-xl font-bold tracking-tight text-foreground">
-          PennyWise
-        </span>
+        <PennyWiseLogo className="h-8 w-8 text-primary" />
+        <div>
+            <span className="font-headline text-xl font-bold tracking-tight text-foreground">
+            PennyWise
+            </span>
+            <p className="text-xs text-muted-foreground -mt-1">Save Smart. Achieve Big.</p>
+        </div>
       </a>
       <div className="ml-auto flex items-center gap-4">
         {user && (
