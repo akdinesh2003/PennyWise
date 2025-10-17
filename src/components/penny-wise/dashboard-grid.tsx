@@ -141,7 +141,7 @@ export function DashboardGrid() {
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-3xl">
-                <AiInsights />
+                  <AiInsights />
               </DialogContent>
             </Dialog>
              <Dialog>
