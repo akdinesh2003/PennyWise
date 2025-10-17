@@ -27,17 +27,7 @@ export const savingsGoals = [
     },
 ];
 
-export const transactions = [
-  { id: 1, name: 'Starbucks Coffee', category: 'Food & Drink', amount: -5.75, date: '2024-07-22' },
-  { id: 2, name: 'Monthly Salary', category: 'Income', amount: 3500, date: '2024-07-21' },
-  { id: 3, name: 'Netflix Subscription', category: 'Entertainment', amount: -15.99, date: '2024-07-20' },
-  { id: 4, name: 'Groceries from Whole Foods', category: 'Groceries', amount: -85.40, date: '2024-07-19' },
-  { id: 5, name: 'Concert Tickets', category: 'Entertainment', amount: -150.00, date: '2024-07-18' },
-  { id: 6, name: 'Gasoline', category: 'Transport', amount: -45.20, date: '2024-07-17' },
-  { id: 7, name: 'Dinner at Italian Restaurant', category: 'Food & Drink', amount: -120.00, date: '2024-07-16' },
-  { id: 8, name: 'Gym Membership', category: 'Health', amount: -40.00, date: '2024-07-15' },
-  { id: 9, name: 'Paycheck', category: 'Income', amount: 1500.00, date: '2024-07-05' },
-];
+export const transactions: { id: number; name: string; category: string; amount: number; date: string; }[] = [];
 
 export const budgets = [
     { id: 1, category: 'Food & Drink', spent: 125.75, total: 400 },
