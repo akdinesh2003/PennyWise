@@ -6,7 +6,7 @@ import { SavingsGoalCarousel } from './savings-goal-carousel';
 import { AiInsights } from './ai-insights';
 import { TransactionHistory } from './transaction-history';
 import { summaryData as initialSummaryData, transactions as initialTransactions, savingsGoals as initialSavingsGoals, budgets as initialBudgets, bills as initialBills } from '@/lib/data';
-import { PiggyBank, TrendingUp, Coins, Flame, History, Sparkles, PieChart, Target, Calendar, HeartPulse } from 'lucide-react';
+import { PiggyBank, TrendingUp, History, Sparkles, PieChart, Target, Calendar, HeartPulse } from 'lucide-react';
 import { SendMoney } from './send-money';
 import { type SavingsGoalData } from './savings-goal';
 import { Button } from '../ui/button';
@@ -87,7 +87,7 @@ export function DashboardGrid() {
 
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-      <div className="lg:col-span-3 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="lg:col-span-3 grid grid-cols-1 gap-6 sm:grid-cols-2">
         <SummaryCard
           title="Total Balance"
           value={summaryData.totalBalance}
@@ -100,17 +100,6 @@ export function DashboardGrid() {
           icon={TrendingUp}
           isCurrency
           change="+5.2%"
-        />
-        <SummaryCard
-          title="Penny Points"
-          value={summaryData.pennyPoints}
-          icon={Coins}
-        />
-        <SummaryCard
-          title="Savings Streak"
-          value={summaryData.savingsStreak}
-          icon={Flame}
-          unit="days"
         />
       </div>
 
@@ -141,6 +130,9 @@ export function DashboardGrid() {
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-3xl">
+                  <DialogHeader>
+                    <DialogTitle>AI-Powered Savings Insights</DialogTitle>
+                  </DialogHeader>
                   <AiInsights />
               </DialogContent>
             </Dialog>
@@ -152,6 +144,9 @@ export function DashboardGrid() {
                     </Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-lg">
+                    <DialogHeader>
+                        <DialogTitle>Spending Breakdown</DialogTitle>
+                    </DialogHeader>
                     <SpendingBreakdown transactions={transactions} />
                 </DialogContent>
             </Dialog>
@@ -163,6 +158,9 @@ export function DashboardGrid() {
                     </Button>
                 </DialogTrigger>
                 <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Monthly Budgets</DialogTitle>
+                    </DialogHeader>
                     <MonthlyBudgeting budgets={budgets} />
                 </DialogContent>
             </Dialog>
@@ -174,6 +172,9 @@ export function DashboardGrid() {
                     </Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                        <DialogTitle>Upcoming Bills</DialogTitle>
+                    </DialogHeader>
                     <UpcomingBills bills={bills} />
                 </DialogContent>
             </Dialog>
@@ -185,6 +186,9 @@ export function DashboardGrid() {
                     </Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-sm">
+                    <DialogHeader>
+                        <DialogTitle>Financial Health Score</DialogTitle>
+                    </DialogHeader>
                     <FinancialHealthScore />
                 </DialogContent>
             </Dialog>
