@@ -170,62 +170,6 @@ export function DashboardGrid() {
                     Invest
                 </Button>
             </InvestDialog>
-             <Dialog>
-                <DialogTrigger asChild>
-                    <Button variant="outline" className="w-full">
-                        <PieChart className="mr-2 h-4 w-4" />
-                        Breakdown
-                    </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-lg">
-                    <DialogHeader>
-                        <DialogTitle>Spending Breakdown</DialogTitle>
-                    </DialogHeader>
-                    <SpendingBreakdown transactions={transactions} />
-                </DialogContent>
-            </Dialog>
-             <Dialog>
-                <DialogTrigger asChild>
-                    <Button variant="outline" className="w-full">
-                        <Target className="mr-2 h-4 w-4" />
-                        Budgets
-                    </Button>
-                </DialogTrigger>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Monthly Budgets</DialogTitle>
-                    </DialogHeader>
-                    <MonthlyBudgeting budgets={budgets} />
-                </DialogContent>
-            </Dialog>
-             <Dialog>
-                <DialogTrigger asChild>
-                    <Button variant="outline" className="w-full">
-                        <Calendar className="mr-2 h-4 w-4" />
-                        Bills
-                    </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-md">
-                    <DialogHeader>
-                        <DialogTitle>Upcoming Bills</DialogTitle>
-                    </DialogHeader>
-                    <UpcomingBills bills={bills} />
-                </DialogContent>
-            </Dialog>
-             <Dialog>
-                <DialogTrigger asChild>
-                    <Button variant="outline" className="w-full">
-                        <HeartPulse className="mr-2 h-4 w-4" />
-                        Health
-                    </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-sm">
-                    <DialogHeader>
-                        <DialogTitle>Financial Health Score</DialogTitle>
-                    </DialogHeader>
-                    <FinancialHealthScore />
-                </DialogContent>
-            </Dialog>
         </div>
       </div>
 
