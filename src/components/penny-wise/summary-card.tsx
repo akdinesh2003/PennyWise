@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { LucideIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface SummaryCardProps {
   title: string;
@@ -8,15 +9,16 @@ interface SummaryCardProps {
   isCurrency?: boolean;
   change?: string;
   unit?: string;
+  className?: string;
 }
 
-export function SummaryCard({ title, value, icon: Icon, isCurrency = false, change, unit }: SummaryCardProps) {
+export function SummaryCard({ title, value, icon: Icon, isCurrency = false, change, unit, className }: SummaryCardProps) {
   const formattedValue = isCurrency
     ? new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(value)
     : value.toLocaleString();
 
   return (
-    <Card className="shadow-md transition-transform hover:scale-[1.02] hover:shadow-xl">
+    <Card className={cn("shadow-md transition-transform hover:scale-[1.02] hover:shadow-xl", className)}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
         <Icon className="h-5 w-5 text-muted-foreground" />

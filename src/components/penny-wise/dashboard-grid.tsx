@@ -15,6 +15,7 @@ import { ScrollArea } from '../ui/scroll-area';
 import { InvestDialog } from './invest-dialog';
 import { RequestMoneyDialog } from './request-money-dialog';
 import { ReceiveMoneyDialog } from './receive-money-dialog';
+import { WithdrawSavingsDialog } from './withdraw-savings-dialog';
 
 export function DashboardGrid() {
   const [summaryData, setSummaryData] = useState(initialSummaryData);
@@ -133,6 +134,42 @@ export function DashboardGrid() {
     ]);
   };
 
+  const handleWithdrawSavings = (amount: number) => {
+    // Add to total balance
+    setSummaryData(prev => ({
+      ...prev,
+      totalBalance: prev.totalBalance + amount,
+    }));
+
+    // Deduct from savings goals
+    setSavingsGoals(prevGoals => {
+      let remainingWithdrawal = amount;
+      const updatedGoals = [...prevGoals];
+      
+      for (let i = 0; i < updatedGoals.length; i++) {
+        if (remainingWithdrawal <= 0) break;
+        const goal = updatedGoals[i];
+        const amountToWithdraw = Math.min(goal.current, remainingWithdrawal);
+        goal.current -= amountToWithdraw;
+        remainingWithdrawal -= amountToWithdraw;
+      }
+
+      return updatedGoals;
+    });
+
+    // Add transaction
+    setTransactions(prev => [
+      {
+        id: prev.length + 1,
+        name: 'Withdrawal from Savings',
+        category: 'Transfers',
+        amount: amount,
+        date: new Date().toISOString().split('T')[0],
+      },
+      ...prev,
+    ]);
+  };
+
 
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -143,12 +180,20 @@ export function DashboardGrid() {
           icon={PiggyBank}
           isCurrency
         />
-        <SummaryCard
-          title="Total Savings"
-          value={totalSavings}
-          icon={Landmark}
-          isCurrency
-        />
+        <WithdrawSavingsDialog
+          totalSavings={totalSavings}
+          onWithdraw={handleWithdrawSavings}
+        >
+          <div>
+            <SummaryCard
+              title="Total Savings"
+              value={totalSavings}
+              icon={Landmark}
+              isCurrency
+            />
+          </div>
+        </WithdrawSavingsDialog>
+
         <SummaryCard
           title="Total Invested"
           value={investments.totalInvested}
