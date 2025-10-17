@@ -1,6 +1,6 @@
 "use client";
 
-import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -11,28 +11,43 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { PennyWiseLogo } from '@/components/icons';
-import { type user as UserType } from '@/lib/data';
 import { ThemeToggle } from '@/components/theme-toggle';
-import { Settings, LogOut, User } from 'lucide-react';
+import { Settings, LogOut, User as UserIcon } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
 import { ProfileDialog } from './profile-dialog';
 import { SettingsDialog } from './settings-dialog';
+import { useAuth, useUser } from '@/firebase';
+import { signOut } from 'firebase/auth';
 
 interface HeaderProps {
-    user: typeof UserType;
     onProfileUpdate: (name: string, email: string) => void;
 }
 
-export function Header({ user, onProfileUpdate }: HeaderProps) {
+export function Header({ onProfileUpdate }: HeaderProps) {
   const { toast } = useToast();
+  const auth = useAuth();
+  const { user } = useUser();
+  const router = useRouter();
 
-  const handleLogout = () => {
-    toast({
-      title: 'Logged Out',
-      description: 'You have been successfully logged out.',
-    });
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      toast({
+        title: 'Logged Out',
+        description: 'You have been successfully logged out.',
+      });
+      router.push('/login');
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Logout Failed',
+        description: 'An error occurred while logging out.',
+      });
+    }
   };
+  
+  const userInitial = user?.displayName?.charAt(0) || user?.email?.charAt(0) || 'U';
 
   return (
     <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background/80 px-4 backdrop-blur-sm md:px-6">
@@ -43,51 +58,53 @@ export function Header({ user, onProfileUpdate }: HeaderProps) {
         </span>
       </a>
       <div className="ml-auto flex items-center gap-4">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="overflow-hidden rounded-full"
-            >
-              <Avatar>
-                 {user.avatar?.imageUrl && (
-                    <AvatarImage alt={user.name} src={user.avatar.imageUrl} data-ai-hint={user.avatar.imageHint} />
-                  )}
-                <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
-              </Avatar>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuLabel className="font-normal">
-              <div className="flex flex-col space-y-1">
-                <p className="text-sm font-medium leading-none">{user.name}</p>
-                <p className="text-xs leading-none text-muted-foreground">
-                  m@example.com
-                </p>
-              </div>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <ProfileDialog user={user} onSave={onProfileUpdate}>
-              <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                <User />
-                Profile
-              </DropdownMenuItem>
-            </ProfileDialog>
-             <SettingsDialog>
+        {user && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="overflow-hidden rounded-full"
+              >
+                <Avatar>
+                   {user.photoURL && (
+                      <AvatarImage alt={user.displayName || 'User'} src={user.photoURL} />
+                    )}
+                  <AvatarFallback>{userInitial}</AvatarFallback>
+                </Avatar>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuLabel className="font-normal">
+                <div className="flex flex-col space-y-1">
+                  <p className="text-sm font-medium leading-none">{user.displayName || 'PennyWise User'}</p>
+                  <p className="text-xs leading-none text-muted-foreground">
+                    {user.email}
+                  </p>
+                </div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <ProfileDialog onSave={onProfileUpdate}>
                 <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                    <Settings />
-                    Settings
+                  <UserIcon />
+                  Profile
                 </DropdownMenuItem>
-            </SettingsDialog>
-            <ThemeToggle />
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleLogout}>
-              <LogOut />
-              Log out
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+              </ProfileDialog>
+               <SettingsDialog>
+                  <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                      <Settings />
+                      Settings
+                  </DropdownMenuItem>
+              </SettingsDialog>
+              <ThemeToggle />
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={handleLogout}>
+                <LogOut />
+                Log out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
     </header>
   );

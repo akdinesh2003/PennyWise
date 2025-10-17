@@ -1,6 +1,8 @@
 import type { ImagePlaceholder } from './placeholder-images';
 import { PlaceHolderImages } from './placeholder-images';
 
+// The user object is now deprecated as we will use Firebase Auth.
+// This can be removed or kept for reference.
 export const user = {
   name: 'Alex Doe',
   avatar: PlaceHolderImages.find(img => img.id === 'user-avatar') as ImagePlaceholder,
