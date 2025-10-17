@@ -90,7 +90,7 @@ export function DashboardGrid() {
     }
   };
 
-  const handleInvestment = (amount: number) => {
+  const handleInvestment = (amount: number, type: string) => {
     setSummaryData(prev => ({
         ...prev,
         totalBalance: prev.totalBalance - amount
@@ -101,10 +101,13 @@ export function DashboardGrid() {
         // Simulate some returns for now
         returns: prev.returns + amount * 0.05 
     }));
+
+    const typeName = type.charAt(0).toUpperCase() + type.slice(1);
+
     setTransactions(prev => [
         {
             id: prev.length + 1,
-            name: 'Investment',
+            name: `Investment in ${typeName}`,
             category: 'Investment',
             amount: -amount,
             date: new Date().toISOString().split('T')[0],

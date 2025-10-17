@@ -15,16 +15,18 @@ import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { BrainCircuit } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface InvestDialogProps {
   children: React.ReactNode;
-  onInvest: (amount: number) => void;
+  onInvest: (amount: number, type: string) => void;
 }
 
 export function InvestDialog({ children, onInvest }: InvestDialogProps) {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState('');
+  const [investmentType, setInvestmentType] = useState('stocks');
 
   const handleInvest = () => {
     const investmentAmount = parseFloat(amount);
@@ -37,13 +39,14 @@ export function InvestDialog({ children, onInvest }: InvestDialogProps) {
         return;
     }
 
-    onInvest(investmentAmount);
+    onInvest(investmentAmount, investmentType);
     toast({
         title: 'Investment Successful!',
-        description: `You have invested ₹${investmentAmount.toFixed(2)}.`,
+        description: `You have invested ₹${investmentAmount.toFixed(2)} in ${investmentType}.`,
     });
     setOpen(false);
     setAmount('');
+    setInvestmentType('stocks');
   }
 
   return (
@@ -63,6 +66,19 @@ export function InvestDialog({ children, onInvest }: InvestDialogProps) {
              <div className="grid w-full items-center gap-1.5">
                 <Label htmlFor="investment-amount">Amount to Invest (₹)</Label>
                 <Input type="number" id="investment-amount" placeholder="e.g., 50000" value={amount} onChange={(e) => setAmount(e.target.value)} />
+            </div>
+             <div className="grid w-full items-center gap-1.5">
+                <Label htmlFor="investment-type">Investment Type</Label>
+                <Select value={investmentType} onValueChange={setInvestmentType}>
+                    <SelectTrigger id="investment-type">
+                        <SelectValue placeholder="Select an investment type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="stocks">Stocks</SelectItem>
+                        <SelectItem value="crypto">Cryptocurrency</SelectItem>
+                        <SelectItem value="mutual-funds">Mutual Funds</SelectItem>
+                    </SelectContent>
+                </Select>
             </div>
         </div>
         <DialogFooter>
