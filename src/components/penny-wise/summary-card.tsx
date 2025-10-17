@@ -12,7 +12,7 @@ interface SummaryCardProps {
 
 export function SummaryCard({ title, value, icon: Icon, isCurrency = false, change, unit }: SummaryCardProps) {
   const formattedValue = isCurrency
-    ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value)
+    ? new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(value)
     : value.toLocaleString();
 
   return (

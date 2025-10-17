@@ -40,7 +40,7 @@ export function InvestDialog({ children, onInvest }: InvestDialogProps) {
     onInvest(investmentAmount);
     toast({
         title: 'Investment Successful!',
-        description: `You have invested $${investmentAmount.toFixed(2)}.`,
+        description: `You have invested ₹${investmentAmount.toFixed(2)}.`,
     });
     setOpen(false);
     setAmount('');
@@ -61,8 +61,8 @@ export function InvestDialog({ children, onInvest }: InvestDialogProps) {
         </DialogHeader>
         <div className="space-y-4 py-4">
              <div className="grid w-full items-center gap-1.5">
-                <Label htmlFor="investment-amount">Amount to Invest ($)</Label>
-                <Input type="number" id="investment-amount" placeholder="e.g., 500" value={amount} onChange={(e) => setAmount(e.target.value)} />
+                <Label htmlFor="investment-amount">Amount to Invest (₹)</Label>
+                <Input type="number" id="investment-amount" placeholder="e.g., 50000" value={amount} onChange={(e) => setAmount(e.target.value)} />
             </div>
         </div>
         <DialogFooter>

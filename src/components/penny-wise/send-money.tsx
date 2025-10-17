@@ -42,7 +42,7 @@ export function SendMoney({ handleSendMoney }: SendMoneyProps) {
     handleSendMoney(amountNumber, smartSaveAmount, recipient);
     toast({
         title: 'Transaction Successful',
-        description: `$${amountNumber.toFixed(2)} sent to ${recipient}. $${smartSaveAmount.toFixed(2)} moved to savings.`,
+        description: `₹${amountNumber.toFixed(2)} sent to ${recipient}. ₹${smartSaveAmount.toFixed(2)} moved to savings.`,
     });
 
     setIsSending(false);
@@ -75,7 +75,7 @@ export function SendMoney({ handleSendMoney }: SendMoneyProps) {
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="amount" className="text-right">
-              Amount ($)
+              Amount (₹)
             </Label>
             <Input
               id="amount"
@@ -106,15 +106,15 @@ export function SendMoney({ handleSendMoney }: SendMoneyProps) {
           <div className="mt-4 p-4 bg-secondary rounded-lg">
              <div className="flex justify-between text-sm">
                 <span>Send Amount:</span>
-                <span>${amountNumber.toFixed(2)}</span>
+                <span>₹{amountNumber.toFixed(2)}</span>
             </div>
              <div className="flex justify-between text-sm">
                 <span>SmartSave ({smartSave}%):</span>
-                <span>${smartSaveAmount.toFixed(2)}</span>
+                <span>₹{smartSaveAmount.toFixed(2)}</span>
             </div>
             <div className="flex justify-between font-bold text-base mt-2 pt-2 border-t">
                 <span>Total to Deduct:</span>
-                <span>${totalAmount.toFixed(2)}</span>
+                <span>₹{totalAmount.toFixed(2)}</span>
             </div>
           </div>
         </div>
@@ -126,7 +126,7 @@ export function SendMoney({ handleSendMoney }: SendMoneyProps) {
                     Processing...
                 </>
             ) : (
-                `Send $${totalAmount.toFixed(2)}`
+                `Send ₹${totalAmount.toFixed(2)}`
             )}
           </Button>
         </DialogFooter>

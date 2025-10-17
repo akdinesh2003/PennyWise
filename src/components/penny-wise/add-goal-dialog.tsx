@@ -63,8 +63,8 @@ export function AddGoalDialog({ children, onAddGoal }: AddGoalDialogProps) {
                 <Input type="text" id="goal-name" placeholder="e.g., New Gaming PC" value={name} onChange={(e) => setName(e.target.value)} />
             </div>
              <div className="grid w-full items-center gap-1.5">
-                <Label htmlFor="goal-target">Target Amount ($)</Label>
-                <Input type="number" id="goal-target" placeholder="e.g., 2000" value={target} onChange={(e) => setTarget(e.target.value)} />
+                <Label htmlFor="goal-target">Target Amount (₹)</Label>
+                <Input type="number" id="goal-target" placeholder="e.g., 150000" value={target} onChange={(e) => setTarget(e.target.value)} />
             </div>
         </div>
         <DialogFooter>

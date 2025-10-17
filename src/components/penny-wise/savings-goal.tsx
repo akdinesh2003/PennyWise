@@ -53,7 +53,7 @@ export function SavingsGoal({ savingsGoal, onDelete }: SavingsGoalProps) {
   }, [savingsGoal, showConfetti]);
 
   const formatCurrency = (amount: number) =>
-    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+    new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(amount);
 
   return (
     <>

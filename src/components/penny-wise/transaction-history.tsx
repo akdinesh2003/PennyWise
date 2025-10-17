@@ -14,7 +14,7 @@ type Transaction = {
 
 function TransactionItem({ transaction, showSeparator }: { transaction: Transaction, showSeparator: boolean }) {
   const formatCurrency = (amount: number) =>
-    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+    new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(amount);
 
   return (
     <>

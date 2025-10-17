@@ -96,7 +96,7 @@ export function SpendingBreakdown({ transactions }: { transactions: Transaction[
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         >
-                          {totalSpending.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+                          {totalSpending.toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}
                         </tspan>
                         <tspan
                           x={viewBox.cx}

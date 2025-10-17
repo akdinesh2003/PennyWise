@@ -40,7 +40,7 @@ export function RequestMoneyDialog({ children, onRequestMoney }: RequestMoneyDia
     onRequestMoney(requestAmount);
     toast({
         title: 'Funds Added!',
-        description: `You have successfully added $${requestAmount.toFixed(2)} to your account.`,
+        description: `You have successfully added ₹${requestAmount.toFixed(2)} to your account.`,
     });
     setOpen(false);
     setAmount('');
@@ -61,8 +61,8 @@ export function RequestMoneyDialog({ children, onRequestMoney }: RequestMoneyDia
         </DialogHeader>
         <div className="space-y-4 py-4">
              <div className="grid w-full items-center gap-1.5">
-                <Label htmlFor="request-amount">Amount to Add ($)</Label>
-                <Input type="number" id="request-amount" placeholder="e.g., 100" value={amount} onChange={(e) => setAmount(e.target.value)} />
+                <Label htmlFor="request-amount">Amount to Add (₹)</Label>
+                <Input type="number" id="request-amount" placeholder="e.g., 10000" value={amount} onChange={(e) => setAmount(e.target.value)} />
             </div>
         </div>
         <DialogFooter>

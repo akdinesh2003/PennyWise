@@ -31,7 +31,7 @@ function BillItem({ bill }: { bill: Bill }) {
                 </p>
             </div>
             <div className="font-semibold text-lg">
-                {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(bill.amount)}
+                {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(bill.amount)}
             </div>
         </div>
     )
