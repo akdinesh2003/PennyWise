@@ -7,11 +7,27 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+  DialogDescription,
 } from '@/components/ui/dialog';
 import { Confetti } from './confetti';
-import { PartyPopper } from 'lucide-react';
+import { PartyPopper, Trash2 } from 'lucide-react';
+import { Button } from '../ui/button';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
-type SavingsGoalData = {
+export type SavingsGoalData = {
+    id: number;
     name: string;
     current: number;
     target: number;
@@ -19,9 +35,10 @@ type SavingsGoalData = {
 
 type SavingsGoalProps = {
     savingsGoal: SavingsGoalData;
+    onDelete: () => void;
 }
 
-export function SavingsGoal({ savingsGoal }: SavingsGoalProps) {
+export function SavingsGoal({ savingsGoal, onDelete }: SavingsGoalProps) {
   const [progress, setProgress] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
 
@@ -40,7 +57,7 @@ export function SavingsGoal({ savingsGoal }: SavingsGoalProps) {
 
   return (
     <>
-      <div className="px-1">
+      <div className="px-1 relative group">
         <h3 className="font-semibold text-center mb-2">{savingsGoal.name}</h3>
         <div className="space-y-2">
             <Progress value={progress} className="h-3" />
@@ -49,6 +66,31 @@ export function SavingsGoal({ savingsGoal }: SavingsGoalProps) {
             <span className="font-bold text-primary">{formatCurrency(savingsGoal.target)}</span>
             </div>
         </div>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute top-0 right-0 h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              <Trash2 className="h-4 w-4 text-destructive" />
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This will permanently delete your savings goal for "{savingsGoal.name}". This action cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={onDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                Delete
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
       <Dialog open={showConfetti} onOpenChange={setShowConfetti}>
         <DialogContent className="sm:max-w-[425px] overflow-hidden">

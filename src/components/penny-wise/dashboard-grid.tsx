@@ -8,12 +8,13 @@ import { TransactionHistory } from './transaction-history';
 import { summaryData as initialSummaryData, transactions as initialTransactions, savingsGoals as initialSavingsGoals } from '@/lib/data';
 import { PiggyBank, TrendingUp, Coins, Flame } from 'lucide-react';
 import { SendMoney } from './send-money';
+import { type SavingsGoalData } from './savings-goal';
 
 export function DashboardGrid() {
   const [summaryData, setSummaryData] = useState(initialSummaryData);
   const [transactions, setTransactions] = useState(initialTransactions);
   const [savingsGoals, setSavingsGoals] = useState(initialSavingsGoals);
-  const [activeGoalId, setActiveGoalId] = useState(initialSavingsGoals[0].id);
+  const [activeGoalId, setActiveGoalId] = useState(initialSavingsGoals[0]?.id);
 
   const handleSendMoney = (amount: number, smartSaveAmount: number, recipient: string) => {
     const totalDeduction = amount + smartSaveAmount;
@@ -52,6 +53,25 @@ export function DashboardGrid() {
     }
 
     setTransactions(prevTransactions => [newTransaction, newSavingsTransaction, ...prevTransactions]);
+  };
+  
+  const handleAddGoal = (name: string, target: number) => {
+    const newGoal: SavingsGoalData = {
+      id: savingsGoals.length > 0 ? Math.max(...savingsGoals.map(g => g.id)) + 1 : 1,
+      name,
+      target,
+      current: 0,
+    };
+    setSavingsGoals(prev => [...prev, newGoal]);
+  };
+
+  const handleDeleteGoal = (goalId: number) => {
+    setSavingsGoals(prev => prev.filter(g => g.id !== goalId));
+    // If the deleted goal was the active one, select the first one if it exists
+    if (activeGoalId === goalId) {
+      const newActiveGoal = savingsGoals.find(g => g.id !== goalId);
+      setActiveGoalId(newActiveGoal ? newActiveGoal.id : undefined);
+    }
   };
 
 
@@ -93,6 +113,8 @@ export function DashboardGrid() {
         <SavingsGoalCarousel 
           savingsGoals={savingsGoals} 
           onActiveGoalChange={(goalId) => setActiveGoalId(goalId)}
+          onAddGoal={handleAddGoal}
+          onDeleteGoal={handleDeleteGoal}
         />
       </div>
 
