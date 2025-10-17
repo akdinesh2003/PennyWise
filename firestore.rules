@@ -1,0 +1,178 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * @description Secure the UserProfile document for each user.
+     * @path /users/{userId}/userProfile
+     * @allow (create) User 'user123' can create their own profile document if request.auth.uid == 'user123'.
+     * @allow (get) User 'user123' can read their own profile document if request.auth.uid == 'user123'.
+     * @allow (update) User 'user123' can update their own profile document if request.auth.uid == 'user123'.
+     * @allow (delete) User 'user123' can delete their own profile document if request.auth.uid == 'user123'.
+     * @deny (create) User 'user456' cannot create a profile document for user 'user123'.
+     * @deny (get) User 'user456' cannot read user 'user123's profile document.
+     * @principle Enforces document ownership for all operations on user profiles.
+     */
+    match /users/{userId}/userProfile {
+      // Helper function to check if the user is signed in
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      // Helper function to check if the user is the owner of the document
+      function isOwner(userId) {
+        return request.auth.uid == userId;
+      }
+
+      //Helper function to check if the user is the existing owner of the document
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+
+      // Allow a user to create their own profile if the userId matches their auth UID.
+      allow create: if isSignedIn() && isOwner(userId);
+
+      // Only the owner can read their profile.
+      allow get: if isSignedIn() && isOwner(userId);
+
+      // Only the owner can list this document.
+      allow list: if false;
+
+      // Only the owner can update their profile. Enforce immutability of the id field.
+      allow update: if isExistingOwner(userId);
+
+      // Only the owner can delete their profile.
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Secure the SavingsGoal documents for each user.
+     * @path /users/{userId}/savingsGoals/{savingsGoalId}
+     * @allow (create) User 'user123' can create a savings goal if request.auth.uid == 'user123'.
+     * @allow (get) User 'user123' can read their own savings goal if request.auth.uid == 'user123'.
+     * @allow (update) User 'user123' can update their own savings goal if request.auth.uid == 'user123'.
+     * @allow (delete) User 'user123' can delete their own savings goal if request.auth.uid == 'user123'.
+     * @deny (create) User 'user456' cannot create a savings goal for user 'user123'.
+     * @deny (get) User 'user456' cannot read user 'user123's savings goal.
+     * @principle Enforces document ownership for all operations on savings goals.
+     */
+    match /users/{userId}/savingsGoals/{savingsGoalId} {
+      // Helper function to check if the user is signed in
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      // Helper function to check if the user is the owner of the document
+      function isOwner(userId) {
+        return request.auth.uid == userId;
+      }
+
+      //Helper function to check if the user is the existing owner of the document
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+      // Allow a user to create a savings goal if the userId matches their auth UID.
+      allow create: if isSignedIn() && isOwner(userId);
+
+      // Only the owner can read their savings goals.
+      allow get: if isSignedIn() && isOwner(userId);
+
+      // Only the owner can list their savings goals.
+      allow list: if false;
+
+      // Only the owner can update their savings goals. Enforce immutability of the userProfileId field.
+      allow update: if isExistingOwner(userId);
+
+      // Only the owner can delete their savings goals.
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Secure the Transaction documents for each user.
+     * @path /users/{userId}/transactions/{transactionId}
+     * @allow (create) User 'user123' can create a transaction if request.auth.uid == 'user123'.
+     * @allow (get) User 'user123' can read their own transaction if request.auth.uid == 'user123'.
+     * @allow (update) User 'user123' can update their own transaction if request.auth.uid == 'user123'.
+     * @allow (delete) User 'user123' can delete their own transaction if request.auth.uid == 'user123'.
+     * @deny (create) User 'user456' cannot create a transaction for user 'user123'.
+     * @deny (get) User 'user456' cannot read user 'user123's transaction.
+     * @principle Enforces document ownership for all operations on transactions.
+     */
+    match /users/{userId}/transactions/{transactionId} {
+      // Helper function to check if the user is signed in
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      // Helper function to check if the user is the owner of the document
+      function isOwner(userId) {
+        return request.auth.uid == userId;
+      }
+
+      //Helper function to check if the user is the existing owner of the document
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+      // Allow a user to create a transaction if the userId matches their auth UID.
+      allow create: if isSignedIn() && isOwner(userId);
+
+      // Only the owner can read their transactions.
+      allow get: if isSignedIn() && isOwner(userId);
+
+      // Only the owner can list their transactions.
+      allow list: if false;
+
+      // Only the owner can update their transactions. Enforce immutability of the userProfileId field.
+      allow update: if isExistingOwner(userId);
+
+      // Only the owner can delete their transactions.
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Secure the PennyPoint documents for each user.
+     * @path /users/{userId}/pennyPoints/{pennyPointId}
+     * @allow (create) User 'user123' can create a penny point record if request.auth.uid == 'user123'.
+     * @allow (get) User 'user123' can read their own penny point record if request.auth.uid == 'user123'.
+     * @allow (update) User 'user123' can update their own penny point record if request.auth.uid == 'user123'.
+     * @allow (delete) User 'user123' can delete their own penny point record if request.auth.uid == 'user123'.
+     * @deny (create) User 'user456' cannot create a penny point record for user 'user123'.
+     * @deny (get) User 'user456' cannot read user 'user123's penny point record.
+     * @principle Enforces document ownership for all operations on penny points.
+     */
+    match /users/{userId}/pennyPoints/{pennyPointId} {
+      // Helper function to check if the user is signed in
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      // Helper function to check if the user is the owner of the document
+      function isOwner(userId) {
+        return request.auth.uid == userId;
+      }
+
+      //Helper function to check if the user is the existing owner of the document
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+      // Allow a user to create a penny point record if the userId matches their auth UID.
+      allow create: if isSignedIn() && isOwner(userId);
+
+      // Only the owner can read their penny points.
+      allow get: if isSignedIn() && isOwner(userId);
+
+      // Only the owner can list their penny points.
+      allow list: if false;
+
+      // Only the owner can update their penny points. Enforce immutability of the userProfileId field.
+      allow update: if isExistingOwner(userId);
+
+      // Only the owner can delete their penny points.
+      allow delete: if isExistingOwner(userId);
+    }
+  }
+}
