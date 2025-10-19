@@ -72,5 +72,5 @@ The application will be available at [http://localhost:9002](http://localhost:90
 
 ## ✍️ Author
 
--   **Name**: [YOUR_NAME_HERE]
--   **Website**: [YOUR_LINK_HERE]
+-   **Name**: AK DINESH
+-   **Website**: https://github.com/akdinesh2003
