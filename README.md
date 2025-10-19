@@ -4,8 +4,6 @@
 
 PennyWise is a modern personal finance dashboard designed to help you manage your money, track your spending, and achieve your savings goals with the power of AI-driven insights. This application provides a clean, intuitive interface to give you a clear overview of your financial health.
 
-![PennyWise Dashboard](https://i.imgur.com/your-screenshot-url.png) <!-- Replace with a real screenshot URL -->
-
 ## ✨ Features
 
 -   **Dashboard Overview**: A comprehensive view of your total balance, savings, investments, and returns.
